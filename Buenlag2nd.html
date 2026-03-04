@@ -3,220 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-       <link rel="icon" type="image/png" href="Buenlag 2nd.png">
-       <link rel="apple-touch-icon" href="Buenlag 2nd.png">
-    <title>Buenlag 2nd | Tactical OS v1.0 - Thunder Strike</title>
+    <link rel="icon" type="image/png" href="Buenlag 2nd.png">
+    <title>BUENLAG II | APEX TACTICAL OS</title>
     <style>
         :root {
-            --primary-cyan: #00f2ff;
-            --dark-navy: #030a12;
-            --danger-red: #ff3c3c;
-            --glass-bg: rgba(3, 10, 18, 0.95);
-            --glow: 0 0 25px rgba(0, 242, 255, 0.7);
+            --cyan: #00f2ff;
+            --cyan-glow: rgba(0, 242, 255, 0.5);
+            --danger: #ff3c3c;
+            --bg-dark: #02060a;
+            --panel-bg: rgba(2, 6, 10, 0.9);
         }
 
         body, html {
             margin: 0; padding: 0;
-            height: 100%; width: 100%;
-            overflow: hidden; background-color: #000;
-            font-family: 'Segoe UI', 'Courier New', monospace;
-            color: var(--primary-cyan);
+            background-color: #000;
+            color: var(--cyan);
+            font-family: 'Segoe UI', Roboto, monospace;
+            height: 100vh; width: 100vw;
+            overflow: hidden;
         }
 
-        /* --- ADVANCED LIGHTNING STRIKE --- */
-        #lightning-screen {
+        /* --- ATMOSPHERIC EFFECTS --- */
+        #lightning-flash {
             position: fixed; inset: 0;
             background: #fff; opacity: 0;
             z-index: 10000; pointer-events: none;
+            animation: strike 4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        .lightning-bolt {
-            animation: impactFlash 4s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+        @keyframes strike {
+            0% { opacity: 0; }
+            44% { opacity: 0; }
+            45% { opacity: 1; background: var(--cyan); }
+            47% { opacity: 0.2; }
+            48% { opacity: 1; background: #fff; }
+            52% { opacity: 0; }
         }
 
-        @keyframes impactFlash {
-            0% { opacity: 0; background: var(--primary-cyan); }
-            35% { opacity: 0.2; } /* Pre-flicker */
-            37% { opacity: 0; }
-            45.5% { opacity: 1; background: #fff; } /* CORE IMPACT */
-            47% { opacity: 0.1; }
-            48% { opacity: 0.8; background: var(--primary-cyan); }
-            50% { opacity: 0; }
-            90% { opacity: 0; }
-            100% { opacity: 0; }
-        }
-
-        /* --- DUAL SHOCKWAVE --- */
-        .shockwave, .shockwave-alt {
-            position: absolute; border: 3px solid var(--primary-cyan);
-            border-radius: 50%; opacity: 0; z-index: 9998;
-        }
-
-        .shockwave { animation: wave 1.2s ease-out forwards 1.8s; }
-        .shockwave-alt { animation: wave 0.8s ease-out forwards 1.9s; border-color: #fff; }
-
-        @keyframes wave {
-            0% { width: 0; height: 0; opacity: 1; border-width: 20px; }
-            100% { width: 1200px; height: 1200px; opacity: 0; border-width: 1px; }
-        }
-
-        /* --- SCANLINES --- */
-        .scanlines {
+        .scanline-overlay {
             position: fixed; inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 3px;
-            pointer-events: none; z-index: 5000; opacity: 0.4;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.3) 50%);
+            background-size: 100% 4px;
+            z-index: 9000; pointer-events: none; opacity: 0.5;
         }
 
-        /* --- VIEWPORT BEHAVIOR --- */
-        #viewport-container {
+        /* --- CINEMATIC INTRO --- */
+        #intro-terminal {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, #061626 0%, #000 100%);
+            z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            animation: dissolve 0.8s ease-in forwards 4.6s;
+        }
+
+        .logo-impact {
+            width: 320px;
+            filter: drop-shadow(0 0 20px var(--cyan-glow));
+            animation: slamDown 1.5s cubic-bezier(0.13, 0.9, 0.2, 1) forwards;
+        }
+
+        .shock-ring {
+            position: absolute; border: 2px solid var(--cyan);
+            border-radius: 50%; opacity: 0;
+            animation: ripple 1.2s ease-out forwards 1.3s;
+        }
+
+        @keyframes slamDown {
+            0% { transform: scale(10); opacity: 0; filter: blur(40px) brightness(10); }
+            100% { transform: scale(1); opacity: 1; filter: blur(0) brightness(1); }
+        }
+
+        @keyframes ripple {
+            0% { width: 0; height: 0; opacity: 1; border-width: 10px; }
+            100% { width: 1000px; height: 1000px; opacity: 0; border-width: 1px; }
+        }
+
+        .boot-loader {
+            margin-top: 30px;
+            font-size: 12px; font-weight: bold;
+            letter-spacing: 8px;
+            text-shadow: 2px 0 0 rgba(255,0,0,0.5), -2px 0 0 rgba(0,0,255,0.5); /* Glitch effect */
+            overflow: hidden; white-space: nowrap;
+            width: 0; border-right: 3px solid var(--cyan);
+            animation: typeIn 2s steps(30) 1.8s forwards, blink 0.6s infinite;
+        }
+
+        @keyframes typeIn { from { width: 0; } to { width: 350px; } }
+        @keyframes blink { 50% { border-color: transparent; } }
+        @keyframes dissolve { to { clip-path: inset(0 0 100% 0); opacity: 0; visibility: hidden; } }
+
+        /* --- MAIN INTERFACE --- */
+        #main-viewport {
             position: absolute; inset: 0;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s;
-            z-index: 1;
+            transition: 0.8s cubic-bezier(0.2, 0, 0, 1);
         }
 
-        body.form-active #viewport-container {
-            transform: scale(0.9) translateX(-10%);
-            filter: blur(12px) brightness(0.3);
+        body.panel-open #main-viewport {
+            transform: scale(0.92) translateX(-15%);
+            filter: grayscale(0.5) brightness(0.3) blur(10px);
         }
 
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* --- APEX EAGLE ENTRANCE --- */
-        #intro-overlay {
+        /* --- SLIDE-ACTION SIDE PANEL --- */
+        #side-panel-wrapper {
             position: fixed; inset: 0;
-            background: radial-gradient(circle at center, #0a1b2e 0%, #000 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999;
-            animation: introExit 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards 4.5s;
-        }
-
-        .eagle-entrance {
-            width: 340px;
-            filter: drop-shadow(0 0 30px var(--primary-cyan));
-            animation: 
-                eagleSlam 1.8s cubic-bezier(0.13, 0.9, 0.2, 1) forwards,
-                eagleEnergy 2s ease-in-out infinite 1.8s;
-        }
-
-        @keyframes eagleSlam {
-            0% { transform: scale(8) translateY(-300px); filter: blur(30px) brightness(15); opacity: 0; }
-            70% { transform: scale(0.85); filter: blur(0px) brightness(3); opacity: 1; }
-            85% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes eagleEnergy {
-            0%, 100% { filter: drop-shadow(0 0 20px var(--primary-cyan)) brightness(1); transform: translateY(0); }
-            50% { filter: drop-shadow(0 0 50px var(--primary-cyan)) brightness(1.3); transform: translateY(-5px); }
-        }
-
-        .boot-text {
-            margin-top: 40px;
-            font-size: 11px;
-            letter-spacing: 7px;
-            text-transform: uppercase;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 3px solid var(--primary-cyan);
-            text-shadow: 0 0 10px var(--primary-cyan);
-            animation: typing 2.2s steps(35) 2s 1 normal both, blink 0.5s infinite;
-        }
-
-        @keyframes typing { from { width: 0; } to { width: 320px; } }
-        @keyframes blink { 50% { border-color: transparent; } }
-        @keyframes introExit { to { transform: translateY(-100%) scale(1.1); opacity: 0; } }
-
-        /* --- UI DOCK & ELEMENTS --- */
-        .ui-dock {
-            position: fixed; bottom: 30px; left: 30px;
-            display: flex; align-items: center; gap: 25px; z-index: 7000;
-        }
-
-        .form-btn {
-            background: rgba(0, 0, 0, 0.85);
-            color: var(--primary-cyan);
-            border: 1px solid var(--primary-cyan);
-            padding: 15px 35px;
-            font-weight: bold; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 3px;
-            transition: 0.4s; box-shadow: var(--glow);
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); /* Tactical Shape */
-        }
-
-        .form-btn:hover { background: var(--primary-cyan); color: #000; transform: scale(1.05); }
-
-        #form-overlay-wrapper {
-            position: fixed; inset: 0; z-index: 8000;
-            visibility: hidden; transition: 0.5s;
+            z-index: 8500; visibility: hidden;
             display: flex; justify-content: flex-end;
+            transition: 0.4s;
         }
 
-        #form-overlay-wrapper.open { visibility: visible; background: rgba(0, 0, 0, 0.7); }
+        #side-panel-wrapper.active { visibility: visible; background: rgba(0,0,0,0.6); }
 
-        .window-frame {
+        .panel-container {
             width: 75%; height: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            border-left: 3px solid var(--primary-cyan);
+            background: var(--panel-bg);
+            backdrop-filter: blur(30px);
+            border-left: 2px solid var(--cyan);
             transform: translateX(100%);
-            transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: 0.6s cubic-bezier(0.2, 0, 0, 1);
             display: flex; flex-direction: column;
+            box-shadow: -20px 0 50px rgba(0,0,0,0.9);
         }
 
-        #form-overlay-wrapper.open .window-frame { transform: translateX(0); }
+        #side-panel-wrapper.active .panel-container { transform: translateX(0); }
 
-        @media (max-width: 768px) { .window-frame { width: 100%; border-left: none; } }
+        .panel-header {
+            padding: 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            background: linear-gradient(90deg, rgba(0,242,255,0.05), transparent);
+        }
+
+        /* --- TACTICAL HUD DOCK --- */
+        .hud-dock {
+            position: fixed; bottom: 40px; left: 40px;
+            display: flex; align-items: center; gap: 30px;
+            z-index: 9500;
+        }
+
+        .tactical-btn {
+            background: rgba(0, 242, 255, 0.05);
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+            padding: 16px 40px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 4px;
+            cursor: pointer; position: relative;
+            transition: 0.3s;
+            clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
+        }
+
+        .tactical-btn:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 30px var(--cyan-glow);
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) { .panel-container { width: 100%; } }
     </style>
 </head>
-<body id="body-main">
+<body id="os-root">
 
-    <div id="lightning-screen" class="lightning-bolt"></div>
-    <div class="scanlines"></div>
+    <div id="lightning-flash"></div>
+    <div class="scanline-overlay"></div>
 
-    <div id="intro-overlay">
-        <div class="shockwave"></div>
-        <div class="shockwave-alt"></div>
-        <div class="eagle-holder">
-            <img src="Buenlag 2nd.png" class="eagle-entrance" alt="Eagle Logo">
-        </div>
-        <div class="boot-text">BUENLAG 2ND_STRIKE_MODE: ACTIVE</div>
+    <div id="intro-terminal">
+        <div class="shock-ring"></div>
+        <img src="Buenlag 2nd.png" class="logo-impact" alt="Logo">
+        <div class="boot-loader">BUENLAG II_SYSTEM_ACTIVE_</div>
     </div>
 
-    <div id="viewport-container">
+    <div id="main-viewport">
         <iframe src="https://script.google.com/macros/s/AKfycbwP_-ND7RoIu-PByHnuElzdQqa9LWOJVFWHHjahnuQEP9BejcffHJQXIOo8XiUd8g-2/exec" 
                 sandbox="allow-scripts allow-forms allow-popups allow-same-origin"></iframe>
     </div>
 
-    <div id="form-overlay-wrapper" onclick="toggleForm()">
-        <div class="window-frame" onclick="event.stopPropagation()">
-            <div style="padding: 25px; background: linear-gradient(90deg, rgba(0,242,255,0.1), transparent); display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-cyan);">
-                <span style="font-weight: bold; letter-spacing: 4px; font-size: 13px;">>> ENCRYPTION_SECURE_LINK</span>
-                <button style="background: var(--danger-red); border: none; color: white; padding: 10px 20px; cursor: pointer; font-weight: bold;" onclick="toggleForm()">TERMINATE [X]</button>
+    <div id="side-panel-wrapper" onclick="ui.toggleForm()">
+        <div class="panel-container" onclick="event.stopPropagation()">
+            <div class="panel-header">
+                <div style="font-size: 14px; letter-spacing: 5px; font-weight: bold;">
+                    <span style="color: #fff;">[SECURE]</span> REGISTRATION_PORTAL
+                </div>
+                <button style="background: var(--danger); border: none; color: #fff; padding: 10px 20px; cursor: pointer; font-weight: bold; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);" onclick="ui.toggleForm()">ABORT [X]</button>
             </div>
             <iframe src="https://script.google.com/macros/s/AKfycby_XbhkE-4JbB2tR80Yz6qjTQBXPzU_V-95v8dPg-KHffAdCo4WGi5c8RwoPnvjUkbu/exec?page=form" 
                     sandbox="allow-scripts allow-forms allow-popups allow-same-origin"></iframe>
         </div>
     </div>
 
-    <div class="ui-dock">
-        <img src="Buenlag 2nd.png" style="width: 75px; cursor: pointer; filter: drop-shadow(var(--glow)); transition: 0.3s;" onclick="location.reload()" onmouseover="this.style.transform='rotate(10deg)'" onmouseout="this.style.transform='rotate(0deg)'">
-        <button class="form-btn" onclick="toggleForm()">Registration Form</button>
+    <div class="hud-dock">
+        <img src="Buenlag 2nd.png" style="width: 80px; cursor: pointer; filter: drop-shadow(0 0 10px var(--cyan-glow)); transition: 0.5s;" onclick="location.reload()" onmouseover="this.style.filter='brightness(1.5) drop-shadow(0 0 20px var(--cyan))'">
+        <button class="tactical-btn" onclick="ui.toggleForm()">Registration</button>
     </div>
 
     <script>
-        function toggleForm() {
-            const wrapper = document.getElementById('form-overlay-wrapper');
-            const body = document.getElementById('body-main');
-            wrapper.classList.toggle('open');
-            body.classList.toggle('form-active');
-        }
+        const ui = {
+            toggleForm: () => {
+                const wrapper = document.getElementById('side-panel-wrapper');
+                const root = document.getElementById('os-root');
+                wrapper.classList.toggle('active');
+                root.classList.toggle('panel-open');
+            }
+        };
 
-        // Clean up high-intensity assets
+        // Garbage collection for intro assets
         setTimeout(() => {
-            const l = document.getElementById('lightning-screen');
-            if(l) l.remove();
+            const flash = document.getElementById('lightning-flash');
+            if(flash) flash.remove();
         }, 5000);
     </script>
 </body>

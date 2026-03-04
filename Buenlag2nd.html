@@ -24,6 +24,7 @@
             z-index: 1;
         }
 
+        /* The Frame is forced to fill the space */
         iframe {
             width: 100%;
             height: 100%;
@@ -47,7 +48,6 @@
             animation-delay: 4s;
         }
 
-        /* Lightning Animation */
         .lightning {
             position: absolute;
             width: 100%;
@@ -59,7 +59,6 @@
             animation: lightningFlash 4s ease-out;
         }
 
-        /* Eagle "Dive" Animation */
         .eagle-entrance {
             width: 320px;
             height: auto;
@@ -71,7 +70,6 @@
             animation-delay: 0.5s;
         }
 
-        /* System Loading Text */
         .status-text {
             color: #00aaff;
             font-family: 'Courier New', Courier, monospace;
@@ -83,7 +81,6 @@
             animation: fadeInOut 3s infinite;
         }
 
-        /* Keyframes */
         @keyframes lightningFlash {
             0%, 15%, 25%, 100% { opacity: 0; }
             10% { opacity: 0.8; }
@@ -106,7 +103,6 @@
             to { transform: scale(1.5); opacity: 0; visibility: hidden; }
         }
 
-        /* --- STICKY NAVY LOGO --- */
         .logo-link {
             position: fixed;
             bottom: 25px;
@@ -133,7 +129,11 @@
     </div>
 
     <div id="container">
-        <iframe src="https://script.google.com/macros/s/AKfycby_XbhkE-4JbB2tR80Yz6qjTQBXPzU_V-95v8dPg-KHffAdCo4WGi5c8RwoPnvjUkbu/exec"></iframe>
+        <iframe 
+            src="https://script.google.com/macros/s/AKfycby_XbhkE-4JbB2tR80Yz6qjTQBXPzU_V-95v8dPg-KHffAdCo4WGi5c8RwoPnvjUkbu/exec"
+            sandbox="allow-scripts allow-forms allow-popups allow-same-origin"
+            allow="autoplay">
+        </iframe>
     </div>
 
     <a href="#" class="logo-link">

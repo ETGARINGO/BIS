@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buenlag 2nd | Tactical OS v4.0</title>
+    <title>Buenlag 2nd | Tactical OS v1.0 - Thunder Strike</title>
     <style>
         :root {
             --primary-cyan: #00f2ff;
             --dark-navy: #030a12;
             --danger-red: #ff3c3c;
-            --glass-bg: rgba(3, 10, 18, 0.9);
-            --glow: 0 0 15px rgba(0, 242, 255, 0.5);
+            --glass-bg: rgba(3, 10, 18, 0.95);
+            --glow: 0 0 25px rgba(0, 242, 255, 0.7);
         }
 
         body, html {
@@ -21,142 +21,164 @@
             color: var(--primary-cyan);
         }
 
-        /* --- ENTRANCE ONLY LIGHTNING --- */
+        /* --- ADVANCED LIGHTNING STRIKE --- */
         #lightning-screen {
             position: fixed; inset: 0;
-            background: white; opacity: 0;
+            background: #fff; opacity: 0;
             z-index: 10000; pointer-events: none;
         }
 
-        .lightning-flash {
-            animation: flashAction 3s steps(1) forwards;
+        .lightning-bolt {
+            animation: impactFlash 4s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
         }
 
-        @keyframes flashAction {
-            0% { opacity: 0; }
-            5% { opacity: 0.5; }
-            7% { opacity: 0; }
-            15% { opacity: 0.4; }
-            17% { opacity: 0; }
-            25% { opacity: 0.8; }
-            27% { opacity: 0; }
+        @keyframes impactFlash {
+            0% { opacity: 0; background: var(--primary-cyan); }
+            35% { opacity: 0.2; } /* Pre-flicker */
+            37% { opacity: 0; }
+            45.5% { opacity: 1; background: #fff; } /* CORE IMPACT */
+            47% { opacity: 0.1; }
+            48% { opacity: 0.8; background: var(--primary-cyan); }
+            50% { opacity: 0; }
+            90% { opacity: 0; }
             100% { opacity: 0; }
         }
 
-        /* --- SCANLINE EFFECT --- */
+        /* --- DUAL SHOCKWAVE --- */
+        .shockwave, .shockwave-alt {
+            position: absolute; border: 3px solid var(--primary-cyan);
+            border-radius: 50%; opacity: 0; z-index: 9998;
+        }
+
+        .shockwave { animation: wave 1.2s ease-out forwards 1.8s; }
+        .shockwave-alt { animation: wave 0.8s ease-out forwards 1.9s; border-color: #fff; }
+
+        @keyframes wave {
+            0% { width: 0; height: 0; opacity: 1; border-width: 20px; }
+            100% { width: 1200px; height: 1200px; opacity: 0; border-width: 1px; }
+        }
+
+        /* --- SCANLINES --- */
         .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
-            background-size: 100% 2px;
+            position: fixed; inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 3px;
             pointer-events: none; z-index: 5000; opacity: 0.4;
         }
 
-        /* --- MAIN VIEWPORT --- */
+        /* --- VIEWPORT BEHAVIOR --- */
         #viewport-container {
             position: absolute; inset: 0;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s;
             z-index: 1;
         }
 
         body.form-active #viewport-container {
-            transform: scale(0.94) translateX(-5%);
-            filter: blur(5px) brightness(0.5);
+            transform: scale(0.9) translateX(-10%);
+            filter: blur(12px) brightness(0.3);
         }
 
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* --- SIDE-PANEL FORM OVERLAY --- */
-        #form-overlay-wrapper {
+        /* --- APEX EAGLE ENTRANCE --- */
+        #intro-overlay {
             position: fixed; inset: 0;
-            z-index: 6000; visibility: hidden;
-            background: rgba(0, 0, 0, 0);
-            transition: 0.4s;
+            background: radial-gradient(circle at center, #0a1b2e 0%, #000 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999;
+            animation: introExit 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards 4.5s;
+        }
+
+        .eagle-entrance {
+            width: 340px;
+            filter: drop-shadow(0 0 30px var(--primary-cyan));
+            animation: 
+                eagleSlam 1.8s cubic-bezier(0.13, 0.9, 0.2, 1) forwards,
+                eagleEnergy 2s ease-in-out infinite 1.8s;
+        }
+
+        @keyframes eagleSlam {
+            0% { transform: scale(8) translateY(-300px); filter: blur(30px) brightness(15); opacity: 0; }
+            70% { transform: scale(0.85); filter: blur(0px) brightness(3); opacity: 1; }
+            85% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes eagleEnergy {
+            0%, 100% { filter: drop-shadow(0 0 20px var(--primary-cyan)) brightness(1); transform: translateY(0); }
+            50% { filter: drop-shadow(0 0 50px var(--primary-cyan)) brightness(1.3); transform: translateY(-5px); }
+        }
+
+        .boot-text {
+            margin-top: 40px;
+            font-size: 11px;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--primary-cyan);
+            text-shadow: 0 0 10px var(--primary-cyan);
+            animation: typing 2.2s steps(35) 2s 1 normal both, blink 0.5s infinite;
+        }
+
+        @keyframes typing { from { width: 0; } to { width: 320px; } }
+        @keyframes blink { 50% { border-color: transparent; } }
+        @keyframes introExit { to { transform: translateY(-100%) scale(1.1); opacity: 0; } }
+
+        /* --- UI DOCK & ELEMENTS --- */
+        .ui-dock {
+            position: fixed; bottom: 30px; left: 30px;
+            display: flex; align-items: center; gap: 25px; z-index: 7000;
+        }
+
+        .form-btn {
+            background: rgba(0, 0, 0, 0.85);
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+            padding: 15px 35px;
+            font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 3px;
+            transition: 0.4s; box-shadow: var(--glow);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); /* Tactical Shape */
+        }
+
+        .form-btn:hover { background: var(--primary-cyan); color: #000; transform: scale(1.05); }
+
+        #form-overlay-wrapper {
+            position: fixed; inset: 0; z-index: 8000;
+            visibility: hidden; transition: 0.5s;
             display: flex; justify-content: flex-end;
         }
 
-        #form-overlay-wrapper.open { visibility: visible; background: rgba(0, 0, 0, 0.4); }
+        #form-overlay-wrapper.open { visibility: visible; background: rgba(0, 0, 0, 0.7); }
 
         .window-frame {
-            width: 70%; height: 100%;
+            width: 75%; height: 100%;
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border-left: 2px solid var(--primary-cyan);
-            box-shadow: -15px 0 40px rgba(0, 0, 0, 0.8);
-            display: flex; flex-direction: column;
+            backdrop-filter: blur(25px);
+            border-left: 3px solid var(--primary-cyan);
             transform: translateX(100%);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column;
         }
 
         #form-overlay-wrapper.open .window-frame { transform: translateX(0); }
 
-        .window-header {
-            padding: 20px 30px;
-            background: rgba(0, 242, 255, 0.1);
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
-        }
-
-        /* --- UI DOCK --- */
-        .ui-dock {
-            position: fixed; bottom: 30px; left: 30px;
-            display: flex; align-items: center; gap: 20px; z-index: 7000;
-        }
-
-        .form-btn {
-            background: rgba(0, 0, 0, 0.6);
-            color: var(--primary-cyan);
-            border: 1px solid var(--primary-cyan);
-            padding: 12px 28px;
-            font-weight: bold; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px;
-            transition: 0.3s; box-shadow: var(--glow);
-        }
-
-        .form-btn:hover { background: var(--primary-cyan); color: #000; box-shadow: 0 0 25px var(--primary-cyan); }
-
-        /* --- INTRO SEQUENCE: ANIMATED EAGLE --- */
-        #intro-overlay {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle, #0a192f 0%, #000 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999;
-            animation: exitOverlay 0.8s ease-in forwards 3.5s;
-        }
-
-        .eagle-entrance {
-            width: 300px; 
-            filter: drop-shadow(0 0 20px var(--primary-cyan));
-            animation: eagleLand 3s cubic-bezier(0.16, 1, 0.3, 1) forwards, 
-                       shakeEffect 0.2s infinite;
-        }
-
-        @keyframes eagleLand {
-            0% { transform: scale(3); opacity: 0; filter: blur(15px) brightness(5); }
-            10% { opacity: 1; }
-            100% { transform: scale(1); filter: blur(0px) brightness(1); }
-        }
-
-        @keyframes shakeEffect {
-            0%, 100% { transform: translate(0,0); }
-            25% { transform: translate(-1px, 1px); }
-            75% { transform: translate(1px, -1px); }
-        }
-
-        @keyframes exitOverlay { to { transform: translateY(-100%); visibility: hidden; } }
-
-        @media (max-width: 768px) { .window-frame { width: 90%; } }
+        @media (max-width: 768px) { .window-frame { width: 100%; border-left: none; } }
     </style>
 </head>
 <body id="body-main">
 
-    <div id="lightning-screen" class="lightning-flash"></div>
+    <div id="lightning-screen" class="lightning-bolt"></div>
     <div class="scanlines"></div>
 
     <div id="intro-overlay">
-        <img src="Buenlag 2nd.png" class="eagle-entrance" alt="Eagle Logo">
-        <div style="color:var(--primary-cyan); font-family:monospace; margin-top:25px; letter-spacing:8px; font-size: 11px; text-shadow: var(--glow);">
-            SYSTEMS_POWER_UP: STRIKE_MODE
+        <div class="shockwave"></div>
+        <div class="shockwave-alt"></div>
+        <div class="eagle-holder">
+            <img src="Buenlag 2nd.png" class="eagle-entrance" alt="Eagle Logo">
         </div>
+        <div class="boot-text">BUENLAG 2ND_STRIKE_MODE: ACTIVE</div>
     </div>
 
     <div id="viewport-container">
@@ -166,9 +188,9 @@
 
     <div id="form-overlay-wrapper" onclick="toggleForm()">
         <div class="window-frame" onclick="event.stopPropagation()">
-            <div class="window-header">
-                <span style="font-size: 11px; font-weight: bold; letter-spacing: 3px;">>> SECURE_FORM_MODULE</span>
-                <button style="background:var(--danger-red); border:none; color:white; padding: 6px 15px; cursor:pointer; font-weight:bold;" onclick="toggleForm()">EXIT</button>
+            <div style="padding: 25px; background: linear-gradient(90deg, rgba(0,242,255,0.1), transparent); display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-cyan);">
+                <span style="font-weight: bold; letter-spacing: 4px; font-size: 13px;">>> ENCRYPTION_SECURE_LINK</span>
+                <button style="background: var(--danger-red); border: none; color: white; padding: 10px 20px; cursor: pointer; font-weight: bold;" onclick="toggleForm()">TERMINATE [X]</button>
             </div>
             <iframe src="https://script.google.com/macros/s/AKfycby_XbhkE-4JbB2tR80Yz6qjTQBXPzU_V-95v8dPg-KHffAdCo4WGi5c8RwoPnvjUkbu/exec?page=form" 
                     sandbox="allow-scripts allow-forms allow-popups allow-same-origin"></iframe>
@@ -176,7 +198,7 @@
     </div>
 
     <div class="ui-dock">
-        <img src="Buenlag 2nd.png" style="width: 60px; cursor: pointer; filter: drop-shadow(var(--glow));" onclick="location.reload()" alt="Logo">
+        <img src="Buenlag 2nd.png" style="width: 75px; cursor: pointer; filter: drop-shadow(var(--glow)); transition: 0.3s;" onclick="location.reload()" onmouseover="this.style.transform='rotate(10deg)'" onmouseout="this.style.transform='rotate(0deg)'">
         <button class="form-btn" onclick="toggleForm()">Registration Form</button>
     </div>
 
@@ -188,11 +210,11 @@
             body.classList.toggle('form-active');
         }
 
-        // Auto-remove lightning div after intro to save browser resources
+        // Clean up high-intensity assets
         setTimeout(() => {
             const l = document.getElementById('lightning-screen');
             if(l) l.remove();
-        }, 4000);
+        }, 5000);
     </script>
 </body>
 </html>

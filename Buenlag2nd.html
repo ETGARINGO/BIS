@@ -3,142 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buenlag 2nd System</title>
+    <title>Buenlag 2nd | Tactical OS v4.0</title>
     <style>
-        /* Core Layout */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #000;
+        :root {
+            --primary-cyan: #00f2ff;
+            --dark-navy: #030a12;
+            --danger-red: #ff3c3c;
+            --glass-bg: rgba(3, 10, 18, 0.9);
+            --glow: 0 0 15px rgba(0, 242, 255, 0.5);
         }
 
-        #container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
+            overflow: hidden; background-color: #000;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            color: var(--primary-cyan);
+        }
+
+        /* --- ENTRANCE ONLY LIGHTNING --- */
+        #lightning-screen {
+            position: fixed; inset: 0;
+            background: white; opacity: 0;
+            z-index: 10000; pointer-events: none;
+        }
+
+        .lightning-flash {
+            animation: flashAction 3s steps(1) forwards;
+        }
+
+        @keyframes flashAction {
+            0% { opacity: 0; }
+            5% { opacity: 0.5; }
+            7% { opacity: 0; }
+            15% { opacity: 0.4; }
+            17% { opacity: 0; }
+            25% { opacity: 0.8; }
+            27% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* --- SCANLINE EFFECT --- */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 2px;
+            pointer-events: none; z-index: 5000; opacity: 0.4;
+        }
+
+        /* --- MAIN VIEWPORT --- */
+        #viewport-container {
+            position: absolute; inset: 0;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s;
             z-index: 1;
         }
 
-        /* The Frame is forced to fill the space */
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        body.form-active #viewport-container {
+            transform: scale(0.94) translateX(-5%);
+            filter: blur(5px) brightness(0.5);
         }
 
-        /* --- TACTICAL ENTRANCE LAYER --- */
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- SIDE-PANEL FORM OVERLAY --- */
+        #form-overlay-wrapper {
+            position: fixed; inset: 0;
+            z-index: 6000; visibility: hidden;
+            background: rgba(0, 0, 0, 0);
+            transition: 0.4s;
+            display: flex; justify-content: flex-end;
+        }
+
+        #form-overlay-wrapper.open { visibility: visible; background: rgba(0, 0, 0, 0.4); }
+
+        .window-frame {
+            width: 70%; height: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-left: 2px solid var(--primary-cyan);
+            box-shadow: -15px 0 40px rgba(0, 0, 0, 0.8);
+            display: flex; flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #form-overlay-wrapper.open .window-frame { transform: translateX(0); }
+
+        .window-header {
+            padding: 20px 30px;
+            background: rgba(0, 242, 255, 0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        /* --- UI DOCK --- */
+        .ui-dock {
+            position: fixed; bottom: 30px; left: 30px;
+            display: flex; align-items: center; gap: 20px; z-index: 7000;
+        }
+
+        .form-btn {
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+            padding: 12px 28px;
+            font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.3s; box-shadow: var(--glow);
+        }
+
+        .form-btn:hover { background: var(--primary-cyan); color: #000; box-shadow: 0 0 25px var(--primary-cyan); }
+
+        /* --- INTRO SEQUENCE: ANIMATED EAGLE --- */
         #intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; inset: 0;
             background: radial-gradient(circle, #0a192f 0%, #000 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 9999;
-            animation: exitOverlay 0.8s ease-in forwards;
-            animation-delay: 4s;
-        }
-
-        .lightning {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            opacity: 0;
-            z-index: 10000;
-            pointer-events: none;
-            animation: lightningFlash 4s ease-out;
+            animation: exitOverlay 0.8s ease-in forwards 3.5s;
         }
 
         .eagle-entrance {
-            width: 320px;
-            height: auto;
-            z-index: 10001;
-            opacity: 0;
-            filter: drop-shadow(0 0 20px #00aaff);
-            transform: scale(2) translateY(-200px);
-            animation: eagleDive 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-            animation-delay: 0.5s;
+            width: 300px; 
+            filter: drop-shadow(0 0 20px var(--primary-cyan));
+            animation: eagleLand 3s cubic-bezier(0.16, 1, 0.3, 1) forwards, 
+                       shakeEffect 0.2s infinite;
         }
 
-        .status-text {
-            color: #00aaff;
-            font-family: 'Courier New', Courier, monospace;
-            margin-top: 20px;
-            letter-spacing: 3px;
-            font-size: 14px;
-            opacity: 0;
-            z-index: 10001;
-            animation: fadeInOut 3s infinite;
+        @keyframes eagleLand {
+            0% { transform: scale(3); opacity: 0; filter: blur(15px) brightness(5); }
+            10% { opacity: 1; }
+            100% { transform: scale(1); filter: blur(0px) brightness(1); }
         }
 
-        @keyframes lightningFlash {
-            0%, 15%, 25%, 100% { opacity: 0; }
-            10% { opacity: 0.8; }
-            12% { opacity: 0.1; }
-            20% { opacity: 1; }
-            22% { opacity: 0; }
+        @keyframes shakeEffect {
+            0%, 100% { transform: translate(0,0); }
+            25% { transform: translate(-1px, 1px); }
+            75% { transform: translate(1px, -1px); }
         }
 
-        @keyframes eagleDive {
-            0% { opacity: 0; transform: scale(2) translateY(-200px) rotate(-10deg); }
-            100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
-        }
+        @keyframes exitOverlay { to { transform: translateY(-100%); visibility: hidden; } }
 
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes exitOverlay {
-            to { transform: scale(1.5); opacity: 0; visibility: hidden; }
-        }
-
-        .logo-link {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 998;
-            transition: all 0.3s ease;
-        }
-        .logo-link:hover {
-            transform: scale(1.1) translateY(-5px);
-            filter: drop-shadow(0 0 10px #00aaff);
-        }
-        .logo-link img {
-            width: 70px;
-            height: auto;
-        }
+        @media (max-width: 768px) { .window-frame { width: 90%; } }
     </style>
 </head>
-<body>
+<body id="body-main">
+
+    <div id="lightning-screen" class="lightning-flash"></div>
+    <div class="scanlines"></div>
 
     <div id="intro-overlay">
-        <div class="lightning"></div>
-        <img src="Buenlag 2nd.png" class="eagle-entrance" alt="Buenlag Logo">
-        <div class="status-text">INITIALIZING SECURE LINK...</div>
+        <img src="Buenlag 2nd.png" class="eagle-entrance" alt="Eagle Logo">
+        <div style="color:var(--primary-cyan); font-family:monospace; margin-top:25px; letter-spacing:8px; font-size: 11px; text-shadow: var(--glow);">
+            SYSTEMS_POWER_UP: STRIKE_MODE
+        </div>
     </div>
 
-    <div id="container">
-        <iframe 
-            src="https://script.google.com/macros/s/AKfycby_XbhkE-4JbB2tR80Yz6qjTQBXPzU_V-95v8dPg-KHffAdCo4WGi5c8RwoPnvjUkbu/exec"
-            sandbox="allow-scripts allow-forms allow-popups allow-same-origin"
-            allow="autoplay">
-        </iframe>
+    <div id="viewport-container">
+        <iframe src="https://script.google.com/macros/s/AKfycbwP_-ND7RoIu-PByHnuElzdQqa9LWOJVFWHHjahnuQEP9BejcffHJQXIOo8XiUd8g-2/exec" 
+                sandbox="allow-scripts allow-forms allow-popups allow-same-origin"></iframe>
     </div>
 
-    <a href="#" class="logo-link">
-        <img src="Buenlag 2nd.png" alt="Buenlag 2nd Logo">
-    </a>
+    <div id="form-overlay-wrapper" onclick="toggleForm()">
+        <div class="window-frame" onclick="event.stopPropagation()">
+            <div class="window-header">
+                <span style="font-size: 11px; font-weight: bold; letter-spacing: 3px;">>> SECURE_FORM_MODULE</span>
+                <button style="background:var(--danger-red); border:none; color:white; padding: 6px 15px; cursor:pointer; font-weight:bold;" onclick="toggleForm()">EXIT</button>
+            </div>
+            <iframe src="https://script.google.com/macros/s/AKfycby_XbhkE-4JbB2tR80Yz6qjTQBXPzU_V-95v8dPg-KHffAdCo4WGi5c8RwoPnvjUkbu/exec?page=form" 
+                    sandbox="allow-scripts allow-forms allow-popups allow-same-origin"></iframe>
+        </div>
+    </div>
 
+    <div class="ui-dock">
+        <img src="Buenlag 2nd.png" style="width: 60px; cursor: pointer; filter: drop-shadow(var(--glow));" onclick="location.reload()" alt="Logo">
+        <button class="form-btn" onclick="toggleForm()">Registration Form</button>
+    </div>
+
+    <script>
+        function toggleForm() {
+            const wrapper = document.getElementById('form-overlay-wrapper');
+            const body = document.getElementById('body-main');
+            wrapper.classList.toggle('open');
+            body.classList.toggle('form-active');
+        }
+
+        // Auto-remove lightning div after intro to save browser resources
+        setTimeout(() => {
+            const l = document.getElementById('lightning-screen');
+            if(l) l.remove();
+        }, 4000);
+    </script>
 </body>
 </html>
